@@ -64,11 +64,17 @@ public class CalculateSales {
 			FileReader fr = new FileReader(file);
 			br = new BufferedReader(fr);
 
+			Long i = (long) 0;
 			String line;
 			// 一行ずつ読み込む
 			while((line = br.readLine()) != null) {
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
 				System.out.println(line);
+				String[] items = line.split(",");
+				branchNames.put(items[0], items[1]);
+				branchSales.put(items[0],  i);
+				System.out.println(branchNames.get(items[0]));
+				System.out.println(branchSales.get(items[0]));
 			}
 
 		} catch(IOException e) {
