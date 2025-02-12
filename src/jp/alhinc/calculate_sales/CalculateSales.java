@@ -54,21 +54,19 @@ public class CalculateSales {
 		
 		
 		BufferedReader br = null;
-		String line;
-		List<String> salesList = new ArrayList<String>();
 		
 		for(int i = 0; i < rcdFiles.size() ; i++) {	
 			try {
 				FileReader fr = new FileReader(rcdFiles.get(i));
 				br = new BufferedReader(fr);
+				String line;
+				List<String> salesList = new ArrayList<String>();
 				while((line = br.readLine()) != null) {
 					salesList.add(line);
-					if (salesList.size() >= 2) {
-						long fileSale = Long.parseLong(salesList.get(1));
-						Long saleAmount = branchSales.get(salesList.get(0)) + fileSale;
-						branchSales.put(salesList.get(0), saleAmount);
-					}
 				}
+				long fileSale = Long.parseLong(salesList.get(1));
+				Long saleAmount = branchSales.get(salesList.get(0)) + fileSale;
+				branchSales.put(salesList.get(0), saleAmount);
 			} catch(IOException e) {
 				System.out.println(UNKNOWN_ERROR);
 				return;
