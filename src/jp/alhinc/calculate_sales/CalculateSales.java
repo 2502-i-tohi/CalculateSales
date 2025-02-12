@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CalculateSales {
@@ -37,7 +39,52 @@ public class CalculateSales {
 		}
 
 		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
-
+		File[] files = new File(args[0]).listFiles();
+		
+		List<File> rcdFiles = new ArrayList<>();
+		
+		for(int i = 0; i < files.length ; i++) { 
+			if(files[i].getName().matches(".+rcd$")) {
+				rcdFiles.add(files[i]);
+			}
+		}
+		
+		System.out.println(rcdFiles);
+		
+		
+		
+		BufferedReader br = null;
+		String line;
+		List<String> salesList = new ArrayList<String>();
+		
+		for(int i = 0; i < rcdFiles.size() ; i++) {	
+			try {
+				FileReader fr = new FileReader(rcdFiles.get(i));
+				br = new BufferedReader(fr);
+				while((line = br.readLine()) != null) {
+					salesList.add(line);
+					
+					long fileSale = Long.parseLong(salesList.get(1));
+					Long saleAmount = branchSales.get(salesList.get(0)) + fileSale;
+					branchSales.put(salesList.get(0), saleAmount);
+				}
+			} catch(IOException e) {
+				System.out.println(UNKNOWN_ERROR);
+				return;
+			} finally {
+				if(br != null) {
+					try {
+						br.close();
+					} catch(IOException e) {
+						System.out.println(UNKNOWN_ERROR);
+						return;
+					}
+				}
+			}
+		}
+		
+		
+		
 
 
 		// 支店別集計ファイル書き込み処理
@@ -70,8 +117,10 @@ public class CalculateSales {
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
 				String[] items = line.split(",");
 				branchNames.put(items[0], items[1]);
-				branchSales.put(items[0],  0L);
+				branchSales.put(items[0], 0L);
 			}
+			System.out.println(branchNames.get("001"));
+			System.out.println(branchNames);
 
 		} catch(IOException e) {
 			System.out.println(UNKNOWN_ERROR);
