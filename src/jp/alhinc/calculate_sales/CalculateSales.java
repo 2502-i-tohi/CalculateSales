@@ -63,10 +63,11 @@ public class CalculateSales {
 				br = new BufferedReader(fr);
 				while((line = br.readLine()) != null) {
 					salesList.add(line);
-					
-					long fileSale = Long.parseLong(salesList.get(1));
-					Long saleAmount = branchSales.get(salesList.get(0)) + fileSale;
-					branchSales.put(salesList.get(0), saleAmount);
+					if (salesList.size() >= 2) {
+						long fileSale = Long.parseLong(salesList.get(1));
+						Long saleAmount = branchSales.get(salesList.get(0)) + fileSale;
+						branchSales.put(salesList.get(0), saleAmount);
+					}
 				}
 			} catch(IOException e) {
 				System.out.println(UNKNOWN_ERROR);
