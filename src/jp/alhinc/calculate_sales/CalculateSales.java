@@ -26,6 +26,8 @@ public class CalculateSales {
 	private static final String FILE_INVALID_FORMAT = "支店定義ファイルのフォーマットが不正です";
 	private static final String FILE_NOT_SEQUENTIAL = "売上ファイル名が連番になっていません";
 	private static final String THE_NUMBER_EXEEDS_THE_LIMIT = "合計金額が10桁を超えました";
+	private static final String SHOP_CODE_INVALID = "の支店コードが不正です";
+	private static final String INVALID_FORMAT = "のフォーマットが不正です";
 
 	/**
 	 * メインメソッド
@@ -33,15 +35,15 @@ public class CalculateSales {
 	 * @param コマンドライン引数
 	 */
 	public static void main(String[] args) {
-		// 支店コードと支店名を保持するMap
-		Map<String, String> branchNames = new HashMap<>();
-		// 支店コードと売上金額を保持するMap
-		Map<String, Long> branchSales = new HashMap<>();
-		
 		if (args.length != 1) {
 			System.out.println(UNKNOWN_ERROR);
 			return;
 		}
+		
+		// 支店コードと支店名を保持するMap
+		Map<String, String> branchNames = new HashMap<>();
+		// 支店コードと売上金額を保持するMap
+		Map<String, Long> branchSales = new HashMap<>();
 
 		// 支店定義ファイル読み込み処理
 		if(!readFile(args[0], FILE_NAME_BRANCH_LST, branchNames, branchSales)) {
@@ -84,18 +86,19 @@ public class CalculateSales {
 					salesList.add(line);
 				}
 				
+				if(salesList.size() != 2) { 
+					System.out.println(rcdFiles.get(i).getName() + INVALID_FORMAT);
+					return;
+				}
+				
 				if (!branchNames.containsKey(salesList.get(0))) {
-					System.out.println(rcdFiles.get(i).getName() + "の支店コードが不正です");
+					System.out.println(rcdFiles.get(i).getName() + SHOP_CODE_INVALID);
 					return;
 				}
 				
 				if(!salesList.get(1).matches("^[0-9]*$")) {
 					System.out.println(UNKNOWN_ERROR);
 					return;
-				}
-				
-				if(salesList.size() != 2) { 
-					System.out.println(rcdFiles.get(i).getName() + "のフォーマットが不正です");
 				}
 				
 				long fileSale = Long.parseLong(salesList.get(1));
@@ -158,7 +161,7 @@ public class CalculateSales {
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
 				String[] items = line.split(",");
 				
-				if((items.length != 2) || (!items[0].matches("[0-9]{3}"))){ 
+				if((items.length != 2) || (!items[0].matches("^[0-9]{3}$"))){ 
 				    //支店定義ファイルの仕様が満たされていない場合、 
 				    //エラーメッセージをコンソールに表示します。 
 					System.out.println(FILE_INVALID_FORMAT);
