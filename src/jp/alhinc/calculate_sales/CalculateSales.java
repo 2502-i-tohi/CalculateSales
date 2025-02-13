@@ -1,8 +1,10 @@
 package jp.alhinc.calculate_sales;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,18 +51,16 @@ public class CalculateSales {
 			}
 		}
 		
-		System.out.println(rcdFiles);
-		
-		
-		
 		BufferedReader br = null;
 		
 		for(int i = 0; i < rcdFiles.size() ; i++) {	
 			try {
 				FileReader fr = new FileReader(rcdFiles.get(i));
 				br = new BufferedReader(fr);
+				
 				String line;
 				List<String> salesList = new ArrayList<String>();
+				
 				while((line = br.readLine()) != null) {
 					salesList.add(line);
 				}
@@ -90,6 +90,8 @@ public class CalculateSales {
 		if(!writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)) {
 			return;
 		}
+		
+		
 
 	}
 
@@ -118,9 +120,6 @@ public class CalculateSales {
 				branchNames.put(items[0], items[1]);
 				branchSales.put(items[0], 0L);
 			}
-			System.out.println(branchNames.get("001"));
-			System.out.println(branchNames);
-
 		} catch(IOException e) {
 			System.out.println(UNKNOWN_ERROR);
 			return false;
@@ -150,7 +149,30 @@ public class CalculateSales {
 	 */
 	private static boolean writeFile(String path, String fileName, Map<String, String> branchNames, Map<String, Long> branchSales) {
 		// ※ここに書き込み処理を作成してください。(処理内容3-1)
-
+		BufferedWriter bw = null;
+		
+		try {
+			File file = new File(path, fileName);
+			FileWriter fw = new FileWriter(file);
+			bw = new BufferedWriter(fw);
+			
+			for (String key : branchNames.keySet()) {
+				bw.write(key + "," + branchNames.get(key) + "," + branchSales.get(key));
+				bw.newLine();
+			}
+		} catch(IOException e) {
+			System.out.println(UNKNOWN_ERROR);
+			return false;
+		} finally {
+			if(bw != null) {
+				try {
+					bw.close();
+				} catch(IOException e) {
+					System.out.println(UNKNOWN_ERROR);
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
