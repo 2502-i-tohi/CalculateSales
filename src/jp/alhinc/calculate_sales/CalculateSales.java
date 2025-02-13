@@ -96,7 +96,7 @@ public class CalculateSales {
 					return;
 				}
 
-				if(!salesList.get(1).matches("^[0-9]*$")) {
+				if(!salesList.get(1).matches("^[0-9]+$")) {
 					System.out.println(UNKNOWN_ERROR);
 					return;
 				}
