@@ -112,13 +112,13 @@ public class CalculateSales {
 					return;
 				}
 
-				// 支店定義ファイルに売り上げファイルの主キーが存在しているかの確認処理エラー処理
+				// 支店定義ファイルに売り上げファイルの主キーが存在しているかの確認エラー処理
 				if (!branchNames.containsKey(salesList.get(0))) {
 					System.out.println(rcdFiles.get(i).getName() + SHOP_CODE_INVALID);
 					return;
 				}
 				
-				// 商品定義ファイルに売り上げファイルの主キーが存在しているかの確認処理エラー処理
+				// 商品定義ファイルに売り上げファイルの主キーが存在しているかの確認エラー処理
 				if (!commodityNames.containsKey(salesList.get(1))) {
 					System.out.println(rcdFiles.get(i).getName() + COMMODITY_CODE_INVALID);
 					return;
@@ -205,10 +205,8 @@ public class CalculateSales {
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
 				String[] items = line.split(",");
 
-				// エラー処理
+				// 支店および商品定義ファイルの仕様が合っているか確認するためのエラー処理
 				if((items.length != 2) || (!items[0].matches(regularExpresssion))){
-				    //支店および商品定義ファイルの仕様が満たされていない場合、
-				    //エラーメッセージをコンソールに表示します。
 					System.out.println(invalidMessage);
 					return false;
 				}
